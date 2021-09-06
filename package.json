@@ -1,0 +1,27 @@
+{
+  "name": "demo-trade-bot",
+  "description": "Trade bot for OPEX exchange",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opexdev/Demo-Trade-Bot.git"
+  },
+  "author": "Ebrahim Hoseiny Fadaee <metalicn20@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/opexdev/Demo-Trade-Bot/issues"
+  },
+  "homepage": "https://github.com/opexdev/Demo-Trade-Bot#readme",
+  "dependencies": {
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^16.7.10"
+  }
+}
