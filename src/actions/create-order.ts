@@ -29,10 +29,10 @@ export const createOrderAction = async function (
   //   "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
   // );
   const data = { price: "51844.40000000" };
-  const input = Number.parseFloat(data.price);
-  // 1 BUY -- binance <= price <= binance%101
+  const sourcePrice = Number.parseFloat(data.price);
+  // 1 BUY -- source <= price <= source%101
   {
-    const price = input + Math.random() * (0.01 * input);
+    const price = sourcePrice + Math.random() * (0.01 * sourcePrice);
     const res = await createOrder(
       {
         symbol,
@@ -43,9 +43,9 @@ export const createOrderAction = async function (
       token
     );
   }
-  // 10 BUY -- binance%90 <= price <= binance
+  // 10 BUY -- source%90 <= price <= source
   for (let i = 0; i < 10; i++) {
-    const price = input - Math.random() * (0.1 * input);
+    const price = sourcePrice - Math.random() * (0.1 * sourcePrice);
     const res = await createOrder(
       {
         symbol,
@@ -56,9 +56,9 @@ export const createOrderAction = async function (
       token
     );
   }
-  // 1 SELL -- binance%99 <= price <= binance
+  // 1 SELL -- source%99 <= price <= source
   {
-    const price = input - Math.random() * (0.01 * input);
+    const price = sourcePrice - Math.random() * (0.01 * sourcePrice);
     const res = await createOrder(
       {
         symbol,
@@ -69,9 +69,9 @@ export const createOrderAction = async function (
       token
     );
   }
-  // 10 SELL -- binance <= price <= binance%110
+  // 10 SELL -- source <= price <= source%110
   for (let i = 0; i < 10; i++) {
-    const price = input + Math.random() * (0.1 * input);
+    const price = sourcePrice + Math.random() * (0.1 * sourcePrice);
     const res = await createOrder(
       {
         symbol,
