@@ -1,30 +1,87 @@
 import axiosInstance from "axios";
 
-(async function () {
-  const axios = axiosInstance.create({});
+const BASE_URL = "https://api.opex.dev/api/v3";
+const axios = axiosInstance.create({});
+
+const createOrder = async (
+  body: {
+    symbol: string;
+    side: "BUY" | "SELL";
+    price: number;
+    quantity: number;
+  },
+  token: string
+) => {
+  const epoch = Math.round(Date.now() / 1000);
+  const { symbol, side, price, quantity } = body;
+  const url = `${BASE_URL}/order?symbol=${symbol}&side=${side}&price=${price}&quantity=${quantity}&type=LIMIT&timeInForce=GTC&timestamp=${epoch}`;
+  await axios.post(url, null, {
+    headers: {
+      ["Authorization"]: `Bearer ${token}`,
+    },
+  });
+};
+
+(async function (symbol: string) {
   try {
     // const res = await axios.get(
     //   "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
     // );
     const data = { price: "51844.40000000" };
     const input = Number.parseFloat(data.price);
-    // 1 buy request with price between binance-binance%101
+    // 1 BUY -- binance <= price <= binance%101
     {
       const price = input + Math.random() * (0.01 * input);
+      const res = await createOrder(
+        {
+          symbol,
+          side: "BUY",
+          price,
+          quantity: Math.round(Math.random() * 300),
+        },
+        ""
+      );
     }
-    // 10 buy requests with price between binance%90-binance
+    // 10 BUY -- binance$90 <= price <= binance
     for (let i = 0; i < 10; i++) {
       const price = input - Math.random() * (0.1 * input);
+      const res = await createOrder(
+        {
+          symbol,
+          side: "BUY",
+          price,
+          quantity: Math.round(Math.random() * 300),
+        },
+        ""
+      );
     }
-    // 1 sell request with price between binance%99-binance
+    // 1 SELL -- binance$99 <= price <= binance
     {
       const price = input - Math.random() * (0.01 * input);
+      const res = await createOrder(
+        {
+          symbol,
+          side: "SELL",
+          price,
+          quantity: Math.round(Math.random() * 300),
+        },
+        ""
+      );
     }
-    // 10 sell requests with price between binance-binance%110
+    // 10 SELL -- binance <= price <= binance%110
     for (let i = 0; i < 10; i++) {
       const price = input + Math.random() * (0.1 * input);
+      const res = await createOrder(
+        {
+          symbol,
+          side: "SELL",
+          price,
+          quantity: Math.round(Math.random() * 300),
+        },
+        ""
+      );
     }
   } catch (error) {
     console.error(error);
   }
-})();
+})("BTCUSDT");
