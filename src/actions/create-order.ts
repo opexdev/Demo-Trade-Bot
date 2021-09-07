@@ -33,6 +33,7 @@ export const createOrderAction = async function (
   symbol: string,
   qtyMin: number,
   qtyMax: number,
+  delayMs: number,
   authorizationToken: string
 ) {
   // const res = await axios.get(
@@ -54,7 +55,7 @@ export const createOrderAction = async function (
       authorizationToken
     );
   }
-  await delay(9000);
+  await delay(delayMs);
   // 10 BUY | source%90 <= price <= source
   for (let i = 0; i < 10; i++) {
     const price = getRandomNumber(sourcePrice * 0.9, sourcePrice, 2);
@@ -68,7 +69,7 @@ export const createOrderAction = async function (
       },
       authorizationToken
     );
-    await delay(9000);
+    await delay(delayMs);
   }
   // 1 SELL | source%99 <= price <= source
   {
@@ -84,7 +85,7 @@ export const createOrderAction = async function (
       authorizationToken
     );
   }
-  await delay(9000);
+  await delay(delayMs);
   // 10 SELL | source <= price <= source%110
   for (let i = 0; i < 10; i++) {
     const price = getRandomNumber(sourcePrice, sourcePrice * 1.1, 2);
@@ -98,6 +99,6 @@ export const createOrderAction = async function (
       },
       authorizationToken
     );
-    await delay(9000);
+    await delay(delayMs);
   }
 };
