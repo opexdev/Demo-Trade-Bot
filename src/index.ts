@@ -12,13 +12,11 @@ const execute = async () => {
     await Promise.all([
       createOrderAction("BTCUSDT", 0.000001, 0.1, 10000, botToken1),
       // createOrderAction("ETHUSDT", botToken1),
-    ]);
-    await Promise.all([
       createOrderAction("BTCUSDT", 0.000001, 0.1, 10000, botToken2),
       // createOrderAction("ETHUSDT", botToken2),
     ]);
     console.log(`Executeed at ${new Date()}`);
-    setTimeout(execute, 10000);
+    setTimeout(execute, 0);
   } catch (error: any) {
     console.log(error.response?.data || error.message || "Error occured");
   }

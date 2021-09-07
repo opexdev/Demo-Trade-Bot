@@ -1,5 +1,5 @@
 import axios from "axios";
-import delay from "../utils/delay";
+import { delay, epoch } from "../utils";
 
 const BASE_URL = "https://api.opex.dev/api/v3";
 
@@ -12,9 +12,8 @@ const createOrder = async (
   },
   token: string
 ) => {
-  const epoch = Math.round(Date.now() / 1000);
   const { symbol, side, price, quantity } = body;
-  const url = `${BASE_URL}/order?symbol=${symbol}&side=${side}&price=${price}&quantity=${quantity}&type=LIMIT&timeInForce=GTC&timestamp=${epoch}`;
+  const url = `${BASE_URL}/order?symbol=${symbol}&side=${side}&price=${price}&quantity=${quantity}&type=LIMIT&timeInForce=GTC&timestamp=${epoch()}`;
   return axios.post(url, null, {
     headers: {
       ["Authorization"]: `Bearer ${token}`,
