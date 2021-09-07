@@ -26,7 +26,6 @@ const getAccessToken = async (refreshToken: string) => {
 };
 
 const execute = async () => {
-  console.log("Bot started...");
   try {
     const [res0, res1] = await Promise.all([
       getAccessToken(botToken1.refreshToken),
@@ -47,4 +46,5 @@ const execute = async () => {
   }
 };
 
+console.log("Bot started...");
 execute();
