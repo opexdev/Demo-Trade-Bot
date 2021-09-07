@@ -1,19 +1,43 @@
-import { AxiosError } from "axios";
 import { createOrderAction } from "./actions/create-order";
+import axios from "axios";
 
-const botToken1 =
-  "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpSDJCdF8tNGdTS1ZLV1dELXVscVA4VmlJdUtVWU5FS2tuT01GeHBtTzA4In0.eyJleHAiOjE2MzEwMDY4MTgsImlhdCI6MTYzMTAwMzIxOCwianRpIjoiNDQ2YzMxODEtYTM5Mi00MjMwLWFlNzMtMzI0NGVhNjkzYzNhIiwiaXNzIjoiaHR0cHM6Ly9hcGkub3BleC5kZXYvYXV0aC9yZWFsbXMvb3BleCIsInN1YiI6IjA5YTU2ZDhiLWYzNjQtNGM4OC04ZjhkLTNiMGE1MmU3MjA4MCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFkbWluLWNsaSIsInNlc3Npb25fc3RhdGUiOiJkYTE1MDcwYy01ZmQwLTQ0M2UtYjUzMS0yMGQ0ZjY2YWM0OGEiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwic2NvcGUiOiJ0cnVzdCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiLaqdin2LHYqNixINuM2qnZhSDZhtmF2KfbjNi024wiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJkZW1vMSIsImdpdmVuX25hbWUiOiLaqdin2LHYqNixINuM2qnZhSIsImZhbWlseV9uYW1lIjoi2YbZhdin24zYtNuMIiwiZW1haWwiOiJkZW1vMUBvcGV4LmRldiJ9.RsXu8uKHqcEbuG-uhO0XcGYDeOesUfG5Hj7-NGVJlQU0EHt5BpMS_OAFag2ly-t7l2G-TaRJB3r8h7jJwBbcZXGrub-NBBlK6GLe3J2rIwSwLf7RKOgrlW0guKAKEh3_OKrDURn3Wxx1Fl1k6MvE3jlHv3keuqDFv-LlUtI3h6kGYqgegcL303y_9EuEvAlJ2IlrtyIfn3YI4VuGkjVCjb0A8MUHBbWVcX6eVgoMn7mShSn0PBEIHnTjpglPvlcnM0-AjYrddOq5JvHYi8GQIzejSLoxGs-miUNYHGPxAALchFbaDIBHzE8K-kNr15fbrfwLMDLR493dwBckLMHCEQ";
+const botToken1 = {
+  accessToken: "",
+  refreshToken:
+    "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiMzgzZDVkMi1jNjdlLTRhODQtOGJhMy1hMjdiYTEwZGZjNTcifQ.eyJleHAiOjE2MzEwMTMyMDMsImlhdCI6MTYzMTAxMTQwMywianRpIjoiNTE4MDRhMTMtNzc5ZS00ZThjLThiZTYtNTI1MjM0NjU5NTI0IiwiaXNzIjoiaHR0cHM6Ly9hcGkub3BleC5kZXYvYXV0aC9yZWFsbXMvb3BleCIsImF1ZCI6Imh0dHBzOi8vYXBpLm9wZXguZGV2L2F1dGgvcmVhbG1zL29wZXgiLCJzdWIiOiIwOWE1NmQ4Yi1mMzY0LTRjODgtOGY4ZC0zYjBhNTJlNzIwODAiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiYWRtaW4tY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjI1Yjg0ZWY4LWJhMDEtNDNlNC1iMjI4LTJjM2FjZGNhMDNkYiIsInNjb3BlIjoidHJ1c3QgcHJvZmlsZSBlbWFpbCJ9.1M2r3QWjQ_isdd2-sfY0i0aDNTQesYr9SPiXcqHH2B8",
+};
 
-const botToken2 =
-  "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpSDJCdF8tNGdTS1ZLV1dELXVscVA4VmlJdUtVWU5FS2tuT01GeHBtTzA4In0.eyJleHAiOjE2MzEwMDY3OTMsImlhdCI6MTYzMTAwMzE5MywianRpIjoiMWYxODVkY2QtMzU4ZC00MWRmLTllYTctMzg4OWNiYmRkNGYwIiwiaXNzIjoiaHR0cHM6Ly9hcGkub3BleC5kZXYvYXV0aC9yZWFsbXMvb3BleCIsInN1YiI6IjU4ZWYyN2U4LTNhNzMtNGU3OC04MGQxLTJkOTc1ZDJhZmRlMyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFkbWluLWNsaSIsInNlc3Npb25fc3RhdGUiOiJiOTRjNjkyYi1kNWU3LTRhYmUtYTVjMy1iNmM3ZGQ4MzJhYTkiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwic2NvcGUiOiJ0cnVzdCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiLaqdin2LHYqNixINiv2YjZhSDZhtmF2KfbjNi024wiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJkZW1vMiIsImdpdmVuX25hbWUiOiLaqdin2LHYqNixINiv2YjZhSIsImZhbWlseV9uYW1lIjoi2YbZhdin24zYtNuMIiwiZW1haWwiOiJkZW1vMkBvcGV4LmRldiJ9.ZbyVa8rFhWlt7deJq73LFkqCpE-xbGgJbaAVfCb_iPw321fWGjx5eQshpuN75tMRrwLZ0cA7nMX2GFLD1I36uIA1UgxGjOw-U9syvm8wX3Su6zXE1EEsMwPADo_jlp-Zair9qFYej0nbcUI_4mI_nkbDN28QkFU3kSQVo4PMPDoffTI_HlgRrAA3j0hG5AFogLUGjfTA_5ZTWCwsb8L1cA8-_V2jsYOBeWDjpznSqOxFIKXqP77PtZvdG72raFSBMOhcDQ2v9f0hb_JDSLI06VJI7PQSite0r6NFbUY5W7v-XRz7Q24HAUhgAh_HDVIeyctkK3mxbrmfF4pG6X20rg";
+const botToken2 = {
+  accessToken: "",
+  refreshToken:
+    "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiMzgzZDVkMi1jNjdlLTRhODQtOGJhMy1hMjdiYTEwZGZjNTcifQ.eyJleHAiOjE2MzEwMTMyMjgsImlhdCI6MTYzMTAxMTQyOCwianRpIjoiY2IyMDYxMzktYjMyOS00YjEwLWI1MTEtMGMwNGY0ZDYyNGIzIiwiaXNzIjoiaHR0cHM6Ly9hcGkub3BleC5kZXYvYXV0aC9yZWFsbXMvb3BleCIsImF1ZCI6Imh0dHBzOi8vYXBpLm9wZXguZGV2L2F1dGgvcmVhbG1zL29wZXgiLCJzdWIiOiI1OGVmMjdlOC0zYTczLTRlNzgtODBkMS0yZDk3NWQyYWZkZTMiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiYWRtaW4tY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjIwNDUxOGEyLTEyNGYtNDBkNC05MTMxLWI4ZmE4ZTE3YWJhNSIsInNjb3BlIjoidHJ1c3QgcHJvZmlsZSBlbWFpbCJ9.rpEBMpVEXAixRkvUVWqxb9hzzmkZSbmnxk6NHGXfmhY",
+};
+
+const getAccessToken = async (refreshToken: string) => {
+  const form = new URLSearchParams();
+  form.append("grant_type", "refresh_token");
+  form.append("client_id", "admin-cli");
+  form.append("refresh_token", refreshToken);
+  const res = await axios.post(
+    "https://api.opex.dev/auth/realms/opex/protocol/openid-connect/token",
+    form
+  );
+  return res.data as any;
+};
 
 const execute = async () => {
   try {
+    const [res0, res1] = await Promise.all([
+      getAccessToken(botToken1.refreshToken),
+      getAccessToken(botToken2.refreshToken),
+    ]);
+    botToken1.refreshToken = res0.refresh_token;
+    botToken1.accessToken = res0.access_token;
+    botToken2.refreshToken = res1.refresh_token;
+    botToken2.accessToken = res1.access_token;
     await Promise.all([
-      createOrderAction("BTCUSDT", 0.000001, 0.1, 10000, botToken1),
-      // createOrderAction("ETHUSDT", botToken1),
-      createOrderAction("BTCUSDT", 0.000001, 0.1, 10000, botToken2),
-      // createOrderAction("ETHUSDT", botToken2),
+      createOrderAction("BTCUSDT", 0.000001, 0.1, 10000, botToken1.accessToken),
+      createOrderAction("BTCUSDT", 0.000001, 0.1, 10000, botToken2.accessToken),
     ]);
     console.log(`Executeed at ${new Date()}`);
     setTimeout(execute, 0);

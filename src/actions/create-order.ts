@@ -10,13 +10,13 @@ const createOrder = async (
     price: number;
     quantity: number;
   },
-  token: string
+  authorizationToken: string
 ) => {
   const { symbol, side, price, quantity } = body;
   const url = `${BASE_URL}/order?symbol=${symbol}&side=${side}&price=${price}&quantity=${quantity}&type=LIMIT&timeInForce=GTC&timestamp=${epoch()}`;
   return axios.post(url, null, {
     headers: {
-      ["Authorization"]: `Bearer ${token}`,
+      ["Authorization"]: `Bearer ${authorizationToken}`,
     },
   });
 };
