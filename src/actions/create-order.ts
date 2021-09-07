@@ -42,7 +42,7 @@ export const createOrderAction = async function (
   const sourcePrice = Number.parseFloat(data.price);
   // 1 BUY | source <= price <= source%101
   {
-    const price = sourcePrice + Math.random() * (0.01 * sourcePrice);
+    const price = getRandomNumber(sourcePrice, sourcePrice * 1.01, 2);
     const quantity = getRandomNumber(qtyMin, qtyMax);
     const res = await createOrder(
       {
@@ -57,7 +57,7 @@ export const createOrderAction = async function (
   await delay(9000);
   // 10 BUY | source%90 <= price <= source
   for (let i = 0; i < 10; i++) {
-    const price = sourcePrice - Math.random() * (0.1 * sourcePrice);
+    const price = getRandomNumber(sourcePrice * 0.9, sourcePrice, 2);
     const quantity = getRandomNumber(qtyMin, qtyMax);
     const res = await createOrder(
       {
@@ -72,7 +72,7 @@ export const createOrderAction = async function (
   }
   // 1 SELL | source%99 <= price <= source
   {
-    const price = sourcePrice - Math.random() * (0.01 * sourcePrice);
+    const price = getRandomNumber(sourcePrice * 0.99, sourcePrice, 2);
     const quantity = getRandomNumber(qtyMin, qtyMax);
     const res = await createOrder(
       {
@@ -87,7 +87,7 @@ export const createOrderAction = async function (
   await delay(9000);
   // 10 SELL | source <= price <= source%110
   for (let i = 0; i < 10; i++) {
-    const price = sourcePrice + Math.random() * (0.1 * sourcePrice);
+    const price = getRandomNumber(sourcePrice, sourcePrice * 1.1, 2);
     const quantity = getRandomNumber(qtyMin, qtyMax);
     const res = await createOrder(
       {
