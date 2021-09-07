@@ -22,8 +22,17 @@ const createOrder = async (
   });
 };
 
+const getRandomNumber = (min: number, max: number, decimals = 6) => {
+  return (
+    Math.round((min + Math.random() * (max - min)) * 10 ** decimals) /
+    10 ** decimals
+  );
+};
+
 export const createOrderAction = async function (
   symbol: string,
+  qtyMin: number,
+  qtyMax: number,
   authorizationToken: string
 ) {
   // const res = await axios.get(
@@ -34,7 +43,7 @@ export const createOrderAction = async function (
   // 1 BUY | source <= price <= source%101
   {
     const price = sourcePrice + Math.random() * (0.01 * sourcePrice);
-    const quantity = Math.round(Math.random() * 1000) / 1000;
+    const quantity = getRandomNumber(qtyMin, qtyMax);
     const res = await createOrder(
       {
         symbol,
@@ -49,7 +58,7 @@ export const createOrderAction = async function (
   // 10 BUY | source%90 <= price <= source
   for (let i = 0; i < 10; i++) {
     const price = sourcePrice - Math.random() * (0.1 * sourcePrice);
-    const quantity = Math.round(Math.random() * 1000) / 1000;
+    const quantity = getRandomNumber(qtyMin, qtyMax);
     const res = await createOrder(
       {
         symbol,
@@ -64,7 +73,7 @@ export const createOrderAction = async function (
   // 1 SELL | source%99 <= price <= source
   {
     const price = sourcePrice - Math.random() * (0.01 * sourcePrice);
-    const quantity = Math.round(Math.random() * 1000) / 1000;
+    const quantity = getRandomNumber(qtyMin, qtyMax);
     const res = await createOrder(
       {
         symbol,
@@ -79,7 +88,7 @@ export const createOrderAction = async function (
   // 10 SELL | source <= price <= source%110
   for (let i = 0; i < 10; i++) {
     const price = sourcePrice + Math.random() * (0.1 * sourcePrice);
-    const quantity = Math.round(Math.random() * 1000) / 1000;
+    const quantity = getRandomNumber(qtyMin, qtyMax);
     const res = await createOrder(
       {
         symbol,

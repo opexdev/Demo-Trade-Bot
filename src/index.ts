@@ -10,11 +10,11 @@ const botToken2 =
 const execute = async () => {
   try {
     await Promise.all([
-      createOrderAction("BTCUSDT", botToken1),
+      createOrderAction("BTCUSDT", 0.000001, 0.1, botToken1),
       // createOrderAction("ETHUSDT", botToken1),
     ]);
     await Promise.all([
-      createOrderAction("BTCUSDT", botToken2),
+      createOrderAction("BTCUSDT", 0.000001, 0.1, botToken2),
       // createOrderAction("ETHUSDT", botToken2),
     ]);
     console.log(`Executeed at ${new Date()}`);
