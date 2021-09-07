@@ -43,7 +43,7 @@ export const createOrderAction = async function (
       token
     );
   }
-  // 10 BUY -- binance$90 <= price <= binance
+  // 10 BUY -- binance%90 <= price <= binance
   for (let i = 0; i < 10; i++) {
     const price = input - Math.random() * (0.1 * input);
     const res = await createOrder(
@@ -56,7 +56,7 @@ export const createOrderAction = async function (
       token
     );
   }
-  // 1 SELL -- binance$99 <= price <= binance
+  // 1 SELL -- binance%99 <= price <= binance
   {
     const price = input - Math.random() * (0.01 * input);
     const res = await createOrder(
