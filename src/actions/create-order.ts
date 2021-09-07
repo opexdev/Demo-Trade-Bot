@@ -23,7 +23,7 @@ const createOrder = async (
 
 export const createOrderAction = async function (
   symbol: string,
-  token: string
+  authorizationToken: string
 ) {
   // const res = await axios.get(
   //   "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
@@ -40,7 +40,7 @@ export const createOrderAction = async function (
         price,
         quantity: Math.round(Math.random() * 300),
       },
-      token
+      authorizationToken
     );
   }
   // 10 BUY -- source%90 <= price <= source
@@ -53,7 +53,7 @@ export const createOrderAction = async function (
         price,
         quantity: Math.round(Math.random() * 300),
       },
-      token
+      authorizationToken
     );
   }
   // 1 SELL -- source%99 <= price <= source
@@ -66,7 +66,7 @@ export const createOrderAction = async function (
         price,
         quantity: Math.round(Math.random() * 300),
       },
-      token
+      authorizationToken
     );
   }
   // 10 SELL -- source <= price <= source%110
@@ -79,7 +79,7 @@ export const createOrderAction = async function (
         price,
         quantity: Math.round(Math.random() * 300),
       },
-      token
+      authorizationToken
     );
   }
 };
